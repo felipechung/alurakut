@@ -36,7 +36,7 @@ const Box = styled.div`
     border-bottom-color: #ecf2fa;
   }
   input {
-    width: 100%;
+    width: 94%;
     background-color: #f4f4f4;
     color: #333333;
     border: 0;
