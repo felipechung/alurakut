@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 
 import MainGrid from "../src/components/MainGrid";
 import Box from "../src/components/Box";
@@ -25,6 +25,29 @@ function ProfileSidebar(props) {
       <hr />
       <AlurakutProfileSidebarMenuDefault />
     </Box>
+  );
+}
+
+function ProfileRelationsBox(props) {
+  return (
+    <ProfileRelationsBoxWrapper>
+      <h2 className="smallTitle">
+        {props.title} ({props.items.length})
+      </h2>
+
+      <ul>
+        {/* {props.items.map((itemAtual) => {
+          return (
+            <li key={itemAtual.id}>
+              <a href={`/users/${itemAtual.title}`}>
+                <img src={itemAtual.image} />
+                <span>{itemAtual.title}</span>
+              </a>
+            </li>
+          );
+        })} */}
+      </ul>
+    </ProfileRelationsBoxWrapper>
   );
 }
 
@@ -60,6 +83,19 @@ export default function Home() {
 
     setComunidades(comunidadesAtualizadas);
   }
+
+  const [followers, setFollowers] = useState([]);
+
+  //Segundo parametro do useEffect é um array vazio, para que ele seja executado apenas uma vez.
+  useEffect(() => {
+    fetch("https://api.github.com/users/peas/followers")
+      .then((data) => {
+        return data.json();
+      })
+      .then((finalData) => {
+        setFollowers(finalData);
+      });
+  }, []);
 
   return (
     <>
@@ -102,6 +138,8 @@ export default function Home() {
           className="profileRelationsArea"
           style={{ gridArea: "profileRelationsArea" }}
         >
+          <ProfileRelationsBox title="Seguidores" items={followers} />
+
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">Comunidades ({comunidades.length})</h2>
 
